@@ -5,7 +5,8 @@
 
  <MudSnackbarProvider />
 
-<MudIconButton OnClick="OnClick" Icon="@Icons.Material.Filled.ContentCopy" Size="Size.Small" />
+@* <MudIconButton OnClick="OnClick" Icon="@Icons.Material.Filled.ContentCopy" Size="Size.Small" /> *@
+<button onclick="@OnClick" style="background-color:lightgray; padding:5px;border-radius: 4px;">Copy</button>
 
 @code {
 
@@ -15,8 +16,8 @@
     private async Task OnClick()
     {
         Snackbar.Configuration.SnackbarVariant = Variant.Text;
-        Snackbar.Configuration.VisibleStateDuration = 1000;
-        Snackbar.Configuration.HideTransitionDuration = 1000;
+        Snackbar.Configuration.VisibleStateDuration = 1500;
+        Snackbar.Configuration.HideTransitionDuration = 0;
         Snackbar.Configuration.ShowTransitionDuration = 0;
         Snackbar.Configuration.MaximumOpacity = 20;
         Snackbar.Configuration.ShowCloseIcon = false;
@@ -27,9 +28,9 @@
             Snackbar.Add("Password copied!", Severity.Success);
         }
 
-        catch
+        catch(Exception e)
         {
-            Snackbar.Add("Failed to copy password!", Severity.Error);            
+            Snackbar.Add(e.Message, Severity.Error);            
         }
 
 

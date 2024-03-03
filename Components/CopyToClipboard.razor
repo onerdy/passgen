@@ -1,0 +1,39 @@
+﻿@using passgen.Services
+
+ @inject IClipboardService ClipboardService
+ @inject ISnackbar Snackbar
+
+ <MudSnackbarProvider />
+
+<MudIconButton OnClick="OnClick" Icon="@Icons.Material.Filled.ContentCopy" Size="Size.Small" />
+
+@code {
+
+    [Parameter]
+    public string TextToCopy { get; set; }
+
+    private async Task OnClick()
+    {
+        Snackbar.Configuration.SnackbarVariant = Variant.Text;
+        Snackbar.Configuration.VisibleStateDuration = 1000;
+        Snackbar.Configuration.HideTransitionDuration = 1000;
+        Snackbar.Configuration.ShowTransitionDuration = 0;
+        Snackbar.Configuration.MaximumOpacity = 20;
+        Snackbar.Configuration.ShowCloseIcon = false;
+
+        try
+        {
+            await ClipboardService.CopyToClipboard(TextToCopy);
+            Snackbar.Add("Password copied!", Severity.Success);
+        }
+
+        catch
+        {
+            Snackbar.Add("Failed to copy password!", Severity.Error);            
+        }
+
+
+        
+
+    }
+}

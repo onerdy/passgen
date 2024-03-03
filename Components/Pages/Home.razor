@@ -1,0 +1,70 @@
+﻿@page "/"
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<MudStack >
+    <MudText>Password length: @passLength</MudText>
+    <MudSlider T="int"
+               Value="passLength"
+               ValueChanged="@((int newSliderValue)=> GeneratePasswords(newSliderValue))"
+               Min=minPassLength
+               Max=maxPassLength
+               Variant="Variant.Filled"
+               Style="width:300px" />
+    <MudButton OnClick="@(()=> GeneratePasswords(passLength))"
+               Variant="Variant.Filled"
+               EndIcon="@Icons.Material.Filled.Refresh"
+               Style="width:300px">Regenerate</MudButton>
+</MudStack>
+<br />
+<br />
+
+<MudGrid>
+    @foreach(string pass in passwords)
+    {
+    <MudItem xs="12" sm="8" md="6" lg="4">
+        <MudCard Elevation="10">
+            <MudCardContent>
+                <MudStack>
+                <MudField T="string" Variant="Variant.Outlined">
+                    <MudText Typo="Typo.body2">@pass</MudText>
+                </MudField>
+                <MudStack Row="true">
+                    <MudSpacer/>
+                    <CopyToClipboard TextToCopy="@pass" />
+                </MudStack>
+                </MudStack>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    }
+</MudGrid>
+
+@code
+{
+    const int minPassLength = 8;
+    const int maxPassLength = 32;
+    int passLength = (minPassLength + maxPassLength) / 2;
+    const string charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_=+.";
+    string? randomPass;
+    List<string> passwords = new List<string>();
+    private static Random random = new Random();
+
+    protected override void OnInitialized()
+    {
+        GeneratePasswords(passLength);
+    }
+
+    public void GeneratePasswords(int length)
+    {
+        passwords.Clear();
+        passLength = length;
+
+        for (int i = 0; i < 12; i++ )
+        {
+            randomPass = new string(Enumerable.Repeat(charSet, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
+            passwords.Add(randomPass);
+        }
+    }
+}

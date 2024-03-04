@@ -45,6 +45,7 @@
     const int minPassLength = 8;
     const int maxPassLength = 32;
     int passLength = (minPassLength + maxPassLength) / 2;
+    int numberOfPasswords = 1;
     const string charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_=+.";
     string? randomPass;
     List<string> passwords = new List<string>();
@@ -60,7 +61,7 @@
         passwords.Clear();
         passLength = length;
 
-        for (int i = 0; i < 12; i++ )
+        for (int i = 0; i < numberOfPasswords; i++ )
         {
             randomPass = new string(Enumerable.Repeat(charSet, length)
             .Select(s => s[random.Next(s.Length)]).ToArray());

@@ -1,43 +1,26 @@
-﻿@using passgen.Services
+﻿@*
+Copying to clipboard using a Blazor component with JSInterop as seen below does not work on iOS:
+await _jsInterop.InvokeVoidAsync("navigator.clipboard.writeText", text);
 
- @inject IClipboardService ClipboardService
- @inject ISnackbar Snackbar
+To work on iOS we are using JS code directly with the onclick function from an html input button.
+*@
 
- <MudSnackbarProvider />
 
-<MudIconButton OnClick="OnClick" Icon="@Icons.Material.Filled.ContentCopy" Size="Size.Small" />
+<input type="button"
+        value="Copy"
+        style="
+            border-radius: 4px;
+            padding: 5px;
+            background-color: lightslategrey;
+            cursor: pointer;
+            width: 75px"
+        onclick="
+            var el = this;
+            this.value = 'Copying...';
+            navigator.clipboard.writeText('@TextToCopy');
+            setTimeout(()=> (this.value = 'Copy'), 800);"
+>
 
 @code {
-
-    [Parameter]
-    public string TextToCopy { get; set; }
-
-    private async Task OnClick()
-    {
-        Snackbar.Configuration.SnackbarVariant = Variant.Text;
-        Snackbar.Configuration.VisibleStateDuration = 1500;
-        Snackbar.Configuration.HideTransitionDuration = 0;
-        Snackbar.Configuration.ShowTransitionDuration = 0;
-        Snackbar.Configuration.MaximumOpacity = 20;
-        Snackbar.Configuration.ShowCloseIcon = false;
-
-        try
-        {
-            await ClipboardService.CopyToClipboard(TextToCopy);
-
-            Snackbar.Add("Password copied!", Severity.Success);
-        }
-
-        catch(Exception e)
-        {
-            Snackbar.Configuration.ShowCloseIcon = true;
-            Snackbar.Configuration.RequireInteraction = true;
-            
-            Snackbar.Add(e.Message, Severity.Error);            
-        }
-
-
-        
-
-    }
+    [Parameter] public string? TextToCopy { get; set; }
 }

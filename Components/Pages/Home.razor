@@ -31,7 +31,8 @@
                 </MudField>
                 <MudStack Row="true">
                     <MudSpacer/>
-                    <CopyToClipboard TextToCopy="@pass" />
+                    @* <CopyToClipboard TextToCopy="@pass" /> *@
+                    <CopyButton  Value="@pass"/>
                 </MudStack>
                 </MudStack>
             </MudCardContent>

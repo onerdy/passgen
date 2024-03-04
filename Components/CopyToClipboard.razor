@@ -5,8 +5,7 @@
 
  <MudSnackbarProvider />
 
-@* <MudIconButton OnClick="OnClick" Icon="@Icons.Material.Filled.ContentCopy" Size="Size.Small" /> *@
-<button onclick="@OnClick" style="background-color:lightgray; padding:5px;border-radius: 4px;">Copy</button>
+<MudIconButton OnClick="OnClick" Icon="@Icons.Material.Filled.ContentCopy" Size="Size.Small" />
 
 @code {
 
@@ -25,11 +24,15 @@
         try
         {
             await ClipboardService.CopyToClipboard(TextToCopy);
+
             Snackbar.Add("Password copied!", Severity.Success);
         }
 
         catch(Exception e)
         {
+            Snackbar.Configuration.ShowCloseIcon = true;
+            Snackbar.Configuration.RequireInteraction = true;
+            
             Snackbar.Add(e.Message, Severity.Error);            
         }
 

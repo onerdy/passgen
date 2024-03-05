@@ -15,10 +15,9 @@ To work on iOS we are using JS code directly with the onclick function from an h
             background-color: lightslategrey;
             cursor: pointer;
             width: 75px"
-        onclick="
-            var el = this;
-            this.value = 'Copying...';
+        onclick="                        
             navigator.clipboard.writeText('@TextToCopy');
+            this.value='Copied...' ;
             setTimeout(()=> (this.value = 'Copy'), 800);"
 >
 

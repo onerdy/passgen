@@ -2,21 +2,60 @@
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
-<MudStack >
+<MudStack>
+    <MudText>Number of passwords: @numberOfPasswords</MudText>
+    <MudSlider T="int"
+                Value="numberOfPasswords"
+                ValueChanged="@((int newSliderValue)=> UpdateNumberOfPasswords(newSliderValue))"
+                Min=minNumberOfPasswords
+                Max=maxNumberOfPasswords
+                Variant="Variant.Filled"
+                Style="width:250px" />
     <MudText>Password length: @passLength</MudText>
     <MudSlider T="int"
-               Value="passLength"
-               ValueChanged="@((int newSliderValue)=> GeneratePasswords(newSliderValue))"
-               Min=minPassLength
-               Max=maxPassLength
-               Variant="Variant.Filled"
-               Style="width:300px" />
-    <MudButton OnClick="@(()=> GeneratePasswords(passLength))"
+                Value="passLength"
+                ValueChanged="@((int newSliderValue)=> UpdatePassLength(newSliderValue))"
+                Min=minPassLength
+                Max=maxPassLength
+                Variant="Variant.Filled"
+                Style="width:250px" />
+    <MudStack Row="true">
+        <MudStack>
+            <MudText>A-Z</MudText>
+            <MudCheckBox Color="Color.Primary"
+                            Dense="true"
+                            Value="useUpperChars"
+                            ValueChanged="@((bool newValue)=> UpdateUseUpperChars(newValue))" />
+        </MudStack>
+        <MudStack>
+            <MudText>a-z</MudText>
+            <MudCheckBox Color="Color.Primary"
+                            Dense="true"
+                            Value="useLowerChars"
+                            ValueChanged="@((bool newValue)=> UpdateUseLowerChars(newValue))" />
+
+        </MudStack>
+        <MudStack>
+            <MudText>0-9</MudText>
+            <MudCheckBox Color="Color.Primary"
+                            Dense="true"
+                            Value="useNumberChars"
+                            ValueChanged="@((bool newValue)=> UpdateUseNumberChars(newValue))" />
+        </MudStack>
+        <MudStack>
+            <MudText>@symbolChars</MudText>
+            <MudCheckBox Color="Color.Primary"
+                            Dense="true"
+                            Value="useSymbolChars"
+                            ValueChanged="@((bool newValue)=> UpdateUseSymbolChars(newValue))" />
+        </MudStack>
+    </MudStack>
+    <br />
+    <MudButton OnClick="@(()=> GeneratePasswords())"
                Variant="Variant.Filled"
                EndIcon="@Icons.Material.Filled.Refresh"
                Style="width:300px">Regenerate</MudButton>
 </MudStack>
-<br />
 <br />
 
 <MudGrid>
@@ -26,9 +65,9 @@
         <MudCard Elevation="10">
             <MudCardContent>
                 <MudStack>
-                <MudField T="string" Variant="Variant.Outlined">
+                <MudTextField T="string" Variant="Variant.Outlined" InnerPadding="false" Value="@pass" Lines="2">
                     <MudText Typo="Typo.body2">@pass</MudText>
-                </MudField>
+                </MudTextField>
                 <MudStack Row="true">
                     <MudSpacer/>
                     <CopyToClipboard TextToCopy="@pass" />
@@ -43,29 +82,83 @@
 @code
 {
     const int minPassLength = 8;
-    const int maxPassLength = 32;
-    int passLength = (minPassLength + maxPassLength) / 2;
+    const int maxPassLength = 64;
+    int passLength = 16;
+    const int minNumberOfPasswords = 1;
+    const int maxNumberOfPasswords = 12;
     int numberOfPasswords = 1;
-    const string charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_=+.";
+    const string upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const string lowerChars = "abcdefghijklmnopqrstuvwxyz";
+    const string numberChars = "0123456789";
+    const string symbolChars = "!@#$%^&*";
+    bool useUpperChars = true;
+    bool useLowerChars = true;
+    bool useNumberChars = true;
+    bool useSymbolChars = true;
+    string charSet = "";
     string? randomPass;
     List<string> passwords = new List<string>();
     private static Random random = new Random();
 
     protected override void OnInitialized()
     {
-        GeneratePasswords(passLength);
+        GeneratePasswords();
     }
 
-    public void GeneratePasswords(int length)
+    private void UpdateNumberOfPasswords(int newNumberOfPasswords)
+    {
+        numberOfPasswords = newNumberOfPasswords;
+        GeneratePasswords();
+    }
+
+    private void UpdatePassLength(int newPassLength)
+    {
+        passLength = newPassLength;
+        GeneratePasswords();
+    }
+
+    private void UpdateUseUpperChars(bool newUseUpperChars)
+    {
+        useUpperChars = newUseUpperChars;
+        GeneratePasswords();
+    }
+
+    private void UpdateUseLowerChars(bool newUseLowerChars)
+    {
+        useLowerChars = newUseLowerChars;
+        GeneratePasswords();
+    }
+
+    private void UpdateUseNumberChars(bool newUseNumberChars)
+    {
+        useNumberChars = newUseNumberChars;
+        GeneratePasswords();
+    }
+
+    private void UpdateUseSymbolChars(bool newUseSymbolChars)
+    {
+        useSymbolChars = newUseSymbolChars;
+        GeneratePasswords();
+    }
+
+    private void GeneratePasswords()
     {
         passwords.Clear();
-        passLength = length;
+        charSet = "";
 
-        for (int i = 0; i < numberOfPasswords; i++ )
+        if (useUpperChars) charSet += upperChars;
+        if (useLowerChars) charSet += lowerChars;
+        if (useNumberChars) charSet += numberChars;
+        if (useSymbolChars) charSet += symbolChars;
+
+        if (charSet != "")
         {
-            randomPass = new string(Enumerable.Repeat(charSet, length)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
-            passwords.Add(randomPass);
+            for (int i = 0; i < numberOfPasswords; i++)
+            {
+                randomPass = new string(Enumerable.Repeat(charSet, passLength)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+                passwords.Add(randomPass);
+            }
         }
     }
 }

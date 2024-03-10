@@ -1,8 +1,6 @@
 ﻿@*
-Copying to clipboard using a Blazor component with JSInterop as seen below does not work on iOS:
-await _jsInterop.InvokeVoidAsync("navigator.clipboard.writeText", text);
-
-To work on iOS we are using JS code directly with the onclick function from an html input button.
+The initial attempt to get CopyToClipboard working with Blazor JSInterop did not work on iOS.
+So this component is using JS code directly with the onclick function from an html input button.
 *@
 
 <input type="button"
@@ -14,9 +12,16 @@ To work on iOS we are using JS code directly with the onclick function from an h
             @($"color:{MyMudThemeProvider.MyTheme.Palette.Secondary};")
             cursor: pointer;"
        onclick="
-       navigator.clipboard.writeText('@TextToCopy');
-       this.value='Password copied!' ;
-       setTimeout(()=> (this.value = 'Copy'), 2000);">
+            try{
+                navigator.clipboard.writeText('@TextToCopy');
+                this.value='Password copied!' ;
+                setTimeout(()=> (this.value = 'Copy'), 2000);
+            }
+            catch (err)
+            {
+                alert (err);
+            }
+        ">
 
 @code {
     [Parameter] public string? TextToCopy { get; set; }

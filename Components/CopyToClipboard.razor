@@ -5,21 +5,18 @@ await _jsInterop.InvokeVoidAsync("navigator.clipboard.writeText", text);
 To work on iOS we are using JS code directly with the onclick function from an html input button.
 *@
 
-
 <input type="button"
         value="Copy"
         style="
             border-radius: 4px;
             padding: 5px;
-            color: black;
-            background-color: lightslategrey;
-            cursor: pointer;
-            width: 75px"
-        onclick="                        
-            navigator.clipboard.writeText('@TextToCopy');
-            this.value='Copied...' ;
-            setTimeout(()=> (this.value = 'Copy'), 800);"
->
+            @($"background-color:{MyMudThemeProvider.MyTheme.Palette.Primary};")
+            @($"color:{MyMudThemeProvider.MyTheme.Palette.Secondary};")
+            cursor: pointer;"
+       onclick="
+       navigator.clipboard.writeText('@TextToCopy');
+       this.value='Password copied!' ;
+       setTimeout(()=> (this.value = 'Copy'), 2000);">
 
 @code {
     [Parameter] public string? TextToCopy { get; set; }

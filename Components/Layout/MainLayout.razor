@@ -5,10 +5,23 @@
 <MyMudThemeProvider />
 
 <div class="page mud-layout">
-     <main>
-        <MudAppBar Dense="true" Elevation="10" Fixed="false">
-            <MudText>Onerdy's Password Generator</MudText>        
-        </MudAppBar>
+     <main style="@($"background-color:{MyMudThemeProvider.MyTheme.Palette.Tertiary};")
+     width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: auto;
+    overflow-y: auto;">
+        <MudPaper Elevation="10" Square="true" Style="@($"background-color:{MyMudThemeProvider.MyTheme.Palette.Primary};")">
+            <MudStack Row="true">
+                <MudImage Src="PassGenLogo128.png"></MudImage>
+                <MudStack>
+                    <MudText Typo="Typo.h5" Color="Color.Secondary">Onerdy's</MudText>
+                    <MudText Typo="Typo.h5" Color="Color.Secondary">Password</MudText>
+                    <MudText Typo="Typo.h5" Color="Color.Secondary">Generator</MudText>
+                </MudStack>
+            </MudStack>
+        </MudPaper>
         <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-2 pt-2">
             @Body
         </MudContainer>
@@ -20,4 +33,3 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
-

@@ -7,13 +7,16 @@
         {
             Palette = new PaletteLight()
             {
-                Primary = "#594AE2",
-                AppbarBackground = "#594AE2"
+                Primary = Colors.Shades.Black,
+                Secondary = Colors.Amber.Darken1,
+                Tertiary = Colors.Grey.Lighten3
             },
-            PaletteDark = new PaletteDark()
+            Typography = new Typography()
             {
-                Primary = "#594AE2",
-                AppbarBackground = "#594AE2"
+                Default = new Default()
+                {
+                    FontFamily = new[] { "Quicksand", "Helvetica", "Arial", "sans-serif" }
+                }
             }
         };
 }

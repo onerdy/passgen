@@ -8,6 +8,11 @@
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\Data\OffensiveWords.txt" />
+    <None Include="wwwroot\Data\StandardWords.txt" />
+  </ItemGroup>
+
   
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />

@@ -36,8 +36,8 @@ namespace passgen.Services
         {
             string password = "";
 
-            string[] standardWords = File.ReadAllLines(@"./Data/StandardWords.txt");
-            string[] offensiveWords = File.ReadAllLines(@"./Data/OffensiveWords.txt");
+            string[] standardWords = File.ReadAllLines("./wwwroot/Data/StandardWords.txt");
+            string[] offensiveWords = File.ReadAllLines("./wwwroot/Data/OffensiveWords.txt");
             string[] seedWords = [];
 
             if (passphraseOptions.DictionaryType == "Standard")

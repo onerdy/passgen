@@ -1,180 +1,231 @@
 ﻿@page "/"
+@using passgen.Models
+@using passgen.Services
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
-<MudGrid>
-    <MudItem xs="12" md="4" lg="3">
-        <MudText>Number of passwords: @numberOfPasswords</MudText>
-        <MudSlider T="int"
-                   Value="numberOfPasswords"
-                   ValueChanged="@((int newSliderValue)=> UpdateNumberOfPasswords(newSliderValue))"
-                   Min=minNumberOfPasswords
-                   Max=maxNumberOfPasswords
-                   Variant="Variant.Filled"
-                   Style="width:250px" />
-    </MudItem>
-    <MudItem xs="12" md="8" lg="9">
-        <MudText>Password length: @passLength</MudText>
-        <MudSlider T="int"
-                   Value="passLength"
-                   ValueChanged="@((int newSliderValue)=> UpdatePassLength(newSliderValue))"
-                   Min=minPassLength
-                   Max=maxPassLength
-                   Variant="Variant.Filled"
-                   Style="width:250px" />
-    </MudItem>
-    <MudItem xs="12" md="4" lg="3">
-        <MudStack Row="true">
-            <MudStack>
-                <MudText>A-Z</MudText>
-                <MudCheckBox Color="Color.Primary"
-                             Size="Size.Large"
-                             Dense="true"
-                             Value="useUpperChars"
-                             ValueChanged="@((bool newValue)=> UpdateUseUpperChars(newValue))" />
-            </MudStack>
-            <MudStack>
-                <MudText>a-z</MudText>
-                <MudCheckBox Color="Color.Primary"
-                             Size="Size.Large"
-                             Dense="true"
-                             Value="useLowerChars"
-                             ValueChanged="@((bool newValue)=> UpdateUseLowerChars(newValue))" />
-            </MudStack>
-            <MudStack>
-                <MudText>0-9</MudText>
-                <MudCheckBox Color="Color.Primary"
-                             Size="Size.Large"
-                             Dense="true"
-                             Value="useNumberChars"
-                             ValueChanged="@((bool newValue)=> UpdateUseNumberChars(newValue))" />
-            </MudStack>
-            <MudStack>
-                <MudText>@symbolChars</MudText>
-                <MudCheckBox Color="Color.Primary"
-                             Size="Size.Large"
-                             Dense="true"
-                             Value="useSymbolChars"
-                             ValueChanged="@((bool newValue)=> UpdateUseSymbolChars(newValue))" />
+<MudCard Elevation="10" Class="mt-1" Style="width:325px">
+    <MudCardContent>
+        <MudStack>
+            <MudTextField T="string"
+                            Variant="Variant.Outlined"
+                            Margin="Margin.Dense"
+                            Value="@password"
+                            ReadOnly="true"
+                            AutoGrow>
+            </MudTextField>
+            <MudStack Row="true">
+                <MudSpacer />
+                <CopyToClipboard TextToCopy="@password" />
+                <MudIconButton Icon="@Icons.Material.Filled.Refresh"
+                                Color="Color.Primary"
+                                Variant="Variant.Filled"
+                                Style="@($"color: {MyMudThemeProvider.MyTheme.Palette.Secondary}")"
+                                OnClick="@(()=>
+                                        {
+                                        UpdatePassword();
+                                        })" />
+
             </MudStack>
         </MudStack>
-    </MudItem>
-    <MudItem xs="12">
-        <MudButton OnClick="@(()=> GeneratePasswords())"
-                   Variant="Variant.Filled"
-                   EndIcon="@Icons.Material.Filled.Refresh"
-                   Style="width:250px; height:35px"
-                   Color="Color.Primary"
-                   IconColor="Color.Secondary">
-            <MudText Color="Color.Secondary">Regenerate</MudText>
-        </MudButton>
-    </MudItem>
-</MudGrid>
+    </MudCardContent>
+    </MudCard>
+<MudText Class="mt-2">Password type:</MudText>
+<MudRadioGroup Value="passType"
+                Style="margin:-8px"
+                ValueChanged="@((string newValue)=>
+                                {
+                                passType = newValue;
+                                UpdatePassword();
+                                })">
+    <MudRadio Value="@("Password")" Color="Color.Primary">Password</MudRadio>
+    <MudRadio Value="@("Passphrase")" Color="Color.Primary">Passphrase</MudRadio>
+</MudRadioGroup>
 
-<MudGrid Spacing="1" Style="margin-top:10px">
-    @foreach (string pass in passwords)
-    {
-        <MudItem xs="12" sm="10" md="6" lg="4">
-            <MudCard Elevation="10">
-                <MudCardContent>
-                    <MudStack>
-                        <MudTextField T="string"
-                                        Variant="Variant.Outlined"
-                                        Margin="Margin.Dense"
-                                        Value="@pass"
-                                        ReadOnly="true">
-                        </MudTextField>
-                        <MudStack Row="true">
-                            <MudSpacer />
-                            <CopyToClipboard TextToCopy="@pass" />
-                        </MudStack>
-                    </MudStack>
-                </MudCardContent>
-            </MudCard>
-        </MudItem>
-    }
-</MudGrid>
+@if(passType == "Password")
+{
+<MudText Class="mt-4">Password length: @passwordOptions.PassLength</MudText>
+<MudSlider T="int"
+            Value="passwordOptions.PassLength"
+            Min=passwordOptions.MinPassLength
+            Max=passwordOptions.MaxPassLength
+            Variant="Variant.Filled"
+            Style="width:250px"
+            ValueChanged="@((int newValue)=>
+                        {
+                        passwordOptions.PassLength = newValue;
+                        UpdatePassword();
+                        })" />
+<MudStack Row="true" Class="mt-6">
+        <MudStack Class="mr-4" Spacing="1">
+        <MudText>A-Z</MudText>
+        <MudCheckBox Color="Color.Primary"
+                        Size="Size.Large"
+                        Style="margin-left:-8px"               
+                        Dense="true"
+                        Value="passwordOptions.UseUpperChars"
+                        ValueChanged="@((bool newValue)=>
+                                    {
+                                    passwordOptions.UseUpperChars = newValue;
+                                    UpdatePassword();
+                                    })" />
+    </MudStack>
+        <MudStack Class="mr-4" Spacing="1">
+        <MudText>a-z</MudText>
+        <MudCheckBox Color="Color.Primary"
+                        Size="Size.Large"
+                        Style="margin-left:-8px"
+                        Dense="true"
+                        Value="passwordOptions.UseLowerChars"
+                        ValueChanged="@((bool newValue)=>
+                                        {
+                                        passwordOptions.UseLowerChars = newValue;
+                                        UpdatePassword();
+                                        })" />
+    </MudStack>
+        <MudStack Class="mr-4" Spacing="1">
+        <MudText>0-9</MudText>
+        <MudCheckBox Color="Color.Primary"
+                        Size="Size.Large"
+                        Style="margin-left:-8px" 
+                        Dense="true"
+                        Value="passwordOptions.UseNumberChars"
+                        ValueChanged="@((bool newValue)=>
+                                        {
+                                        passwordOptions.UseNumberChars = newValue;
+                                        UpdatePassword();
+                                        })" />
+    </MudStack>
+    <MudStack Class="mr-4" Spacing="1">
+        <MudText>@("!@#$%^&*")</MudText>
+        <MudCheckBox Color="Color.Primary"
+                        Size="Size.Large"
+                        Style="margin-left:-8px" 
+                        Dense="true"
+                        Value="passwordOptions.UseSymbolChars"
+                        ValueChanged="@((bool newValue)=>
+                                        {
+                                        passwordOptions.UseSymbolChars = newValue;
+                                        UpdatePassword();
+                                        })" />
+    </MudStack>
+</MudStack>
+}
+    
+else if(passType == "Passphrase")
+{
+    <MudStack Spacing="0">
+        <MudText Class="mt-4">Dictionary type:</MudText>
+        <MudRadioGroup Value="passphraseOptions.DictionaryType"
+                        Style="margin:-8px"
+                        ValueChanged="@((string newValue)=>
+                                        {
+                                        passphraseOptions.DictionaryType = newValue;
+                                        UpdatePassword();
+                                        })">
+            <MudRadio Value="@("Standard")" Color="Color.Primary">Standard</MudRadio>
+            <MudRadio Value="@("Offensive")" Color="Color.Primary">Offensive</MudRadio>
+        </MudRadioGroup>
+    </MudStack>
+
+    <MudText Class="mt-4">Number of words: @passphraseOptions.NumberOfWords</MudText>
+    <MudSlider T="int"
+               Value="passphraseOptions.NumberOfWords"
+               ValueChanged="@((int newValue)=>
+                                {
+                                passphraseOptions.NumberOfWords = newValue;
+                                UpdatePassword();
+                                })"
+                Min=passphraseOptions.MinNumberOfWords
+                Max=passphraseOptions.MaxNumberOfWords
+                Style="width:250px"
+                Variant="Variant.Filled"/>
+    <MudStack Row="true">
+       <MudText Class="mt-4">Word Separator:</MudText>
+        <MudTextField T="string"
+                        Value="passphraseOptions.SeparatorChar"
+                        MaxLength="1"
+                        Variant="Variant.Outlined"
+                        Style="width:45px;height:25px; margin-top:10px"
+                        Margin="Margin.Dense"
+                        Immediate="true"
+                        ValueChanged="@((string newValue)=>
+                                        {
+                                        passphraseOptions.SeparatorChar = newValue;                                        
+                                        UpdatePassword();
+                                        })" />
+    </MudStack>
+    <MudStack Row="true" Class="mt-4">
+        <MudStack Spacing="1">
+            <MudText>Capitalize?</MudText>
+            <MudCheckBox Color="Color.Primary"
+                            Size="Size.Large"
+                            Dense="true"
+                            Value="passphraseOptions.Capitalize"
+                            Style="margin-left:-5px"
+                            ValueChanged="@((bool newValue)=>
+                                        {
+                                        passphraseOptions.Capitalize = newValue;
+                                        UpdatePassword();
+                                        })" />
+        </MudStack>
+        <MudStack Spacing="1">
+            <MudText>Add number?</MudText>
+            <MudCheckBox Color="Color.Primary"
+                            Size="Size.Large"
+                            Dense="true"
+                            Value="passphraseOptions.AddNumber"
+                            Style="margin-left:-5px"
+                            ValueChanged="@((bool newValue)=>
+                                        {
+                                        passphraseOptions.AddNumber = newValue;
+                                        UpdatePassword();
+                                        })" />
+        </MudStack>
+    </MudStack>
+}
 
 @code
 {
-    const int minPassLength = 8;
-    const int maxPassLength = 32;
-    int passLength = 16;
-    const int minNumberOfPasswords = 1;
-    const int maxNumberOfPasswords = 12;
-    int numberOfPasswords = 12;
-    const string upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const string lowerChars = "abcdefghijklmnopqrstuvwxyz";
-    const string numberChars = "0123456789";
-    const string symbolChars = "!@#$%^&*";
-    string charSet = "";
-    bool useUpperChars = true;
-    bool useLowerChars = true;
-    bool useNumberChars = true;
-    bool useSymbolChars = true;
-    string? randomPass;
-    List<string> passwords = new List<string>();
-    private static Random random = new Random();
+    string passType = "Password";
+    string password = "";
+
+    PasswordOptions passwordOptions = new PasswordOptions
+        {
+            PassLength = 16,
+            MinPassLength = 8,
+            MaxPassLength = 64,
+            UseUpperChars = true,
+            UseLowerChars = true,
+            UseNumberChars = true,
+            UseSymbolChars = true
+        };
+
+    PassphraseOptions passphraseOptions = new PassphraseOptions
+        {
+            NumberOfWords = 3,
+            MinNumberOfWords = 2,
+            MaxNumberOfWords = 6,
+            DictionaryType = "Standard",
+            SeparatorChar = "-",
+            Capitalize = true,
+            AddNumber = true
+        };
 
     protected override void OnInitialized()
     {
-        GeneratePasswords();
+        UpdatePassword();
     }
 
-    private void UpdateNumberOfPasswords(int newNumberOfPasswords)
+    private void UpdatePassword()
     {
-        numberOfPasswords = newNumberOfPasswords;
-        GeneratePasswords();
-    }
-
-    private void UpdatePassLength(int newPassLength)
-    {
-        passLength = newPassLength;
-        GeneratePasswords();
-    }
-
-    private void UpdateUseUpperChars(bool newUseUpperChars)
-    {
-        useUpperChars = newUseUpperChars;
-        GeneratePasswords();
-    }
-
-    private void UpdateUseLowerChars(bool newUseLowerChars)
-    {
-        useLowerChars = newUseLowerChars;
-        GeneratePasswords();
-    }
-
-    private void UpdateUseNumberChars(bool newUseNumberChars)
-    {
-        useNumberChars = newUseNumberChars;
-        GeneratePasswords();
-    }
-
-    private void UpdateUseSymbolChars(bool newUseSymbolChars)
-    {
-        useSymbolChars = newUseSymbolChars;
-        GeneratePasswords();
-    }
-
-    private void GeneratePasswords()
-    {
-        passwords.Clear();
-        charSet = "";
-
-        if (useUpperChars) charSet += upperChars;
-        if (useLowerChars) charSet += lowerChars;
-        if (useNumberChars) charSet += numberChars;
-        if (useSymbolChars) charSet += symbolChars;
-
-        if (charSet != "")
+        if (passType == "Password")
         {
-            for (int i = 0; i < numberOfPasswords; i++)
-            {
-                randomPass = new string(Enumerable.Repeat(charSet, passLength)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
-                passwords.Add(randomPass);
-            }
+            password = GeneratorService.GeneratePassword(passwordOptions);
+        }
+        else if (passType == "Passphrase")
+        {
+            password = GeneratorService.GeneratePassphrase(passphraseOptions);
         }
     }
 }

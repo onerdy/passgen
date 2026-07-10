@@ -21,7 +21,7 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     background-color: var(--color-bg);
     background-image:
         radial-gradient(circle at 50% 0%, rgba(255, 176, 32, 0.16), transparent 55%),
@@ -69,7 +69,7 @@ body {
     background: var(--color-card-bg);
     border: 1px solid var(--color-card-border);
     border-radius: 16px;
-    padding: 16px;
+    padding: 14px;
     box-shadow: var(--shadow-card);
     backdrop-filter: blur(10px);
 }
@@ -148,7 +148,7 @@ body {
 .type-toggle {
     display: flex;
     gap: 6px;
-    margin: 14px 0;
+    margin: 10px 0;
     padding: 4px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--color-card-border);
@@ -188,11 +188,12 @@ body {
 }
 
 .checkbox {
-    padding: 8px 12px;
+    padding: 6px 8px;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--color-card-border);
     color: var(--color-text-muted);
+    font-size: 0.88rem;
     transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
@@ -203,17 +204,17 @@ body {
 }
 
 .controls {
-    margin-top: 4px;
+    margin-top: 2px;
     padding: 0 4px;
 }
 
 .controls .type-toggle {
-    margin: 4px 0 12px;
+    margin: 4px 0 8px;
 }
 
 .field-label {
     display: block;
-    margin: 12px 0 6px;
+    margin: 10px 0 4px;
     font-weight: 600;
     color: var(--color-text-muted);
 }
@@ -230,20 +231,40 @@ input[type="range"] {
 .checkbox-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    margin-top: 6px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.separator-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.separator-group label {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
 }
 
 .separator-input {
-    width: 52px;
+    width: 26px;
     text-align: center;
-    padding: 10px;
+    padding: 4px;
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: 6px;
     background: var(--color-field-bg);
     color: var(--color-text);
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 0.88rem;
 }
 
 .separator-input:focus {

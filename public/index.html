@@ -76,18 +76,21 @@
             <label class="field-label" for="word-count">Number of words: <span id="word-count-value">3</span></label>
             <input id="word-count" type="range" min="2" max="6" value="3">
 
-            <label class="field-label" for="separator">Word separator:</label>
-            <input id="separator" type="text" maxlength="1" value="-" class="separator-input">
-
             <div class="checkbox-row">
-                <label class="checkbox">
-                    <input id="capitalize" type="checkbox" checked>
-                    <span>Capitalize?</span>
-                </label>
-                <label class="checkbox">
-                    <input id="add-number" type="checkbox" checked>
-                    <span>Add number?</span>
-                </label>
+                <div class="separator-group">
+                    <label for="separator" title="Word separator character">Separator</label>
+                    <input id="separator" type="text" maxlength="1" value="-" class="separator-input" aria-label="Word separator character">
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox">
+                        <input id="capitalize" type="checkbox" checked>
+                        <span>Capitalize</span>
+                    </label>
+                    <label class="checkbox">
+                        <input id="add-number" type="checkbox" checked>
+                        <span>Add number</span>
+                    </label>
+                </div>
             </div>
         </section>
     </main>

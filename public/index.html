@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PassGen</title>
+    <meta name="theme-color" content="#0b0d12">
     <link rel="icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +20,7 @@
 
         <section class="card">
             <div class="output-row">
-                <input id="output" type="text" readonly aria-label="Generated password">
+                <textarea id="output" readonly rows="1" aria-label="Generated password"></textarea>
                 <button id="copy-btn" class="btn btn-secondary" type="button">Copy</button>
                 <button id="refresh-btn" class="btn btn-icon" type="button" aria-label="Regenerate" title="Regenerate">&#8635;</button>
             </div>

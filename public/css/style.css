@@ -1,0 +1,153 @@
+:root {
+    --color-primary: #000000;
+    --color-secondary: #ffa000;
+    --color-bg: #f5f5f5;
+    --color-card-bg: #ffffff;
+    --color-border: #e0e0e0;
+    --color-text: #212121;
+    --color-text-muted: #616161;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: "Quicksand", Helvetica, Arial, sans-serif;
+}
+
+.page {
+    width: 100%;
+    max-width: 360px;
+    padding: 32px 20px 60px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+}
+
+.header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.card {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.output-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#output {
+    flex: 1;
+    min-width: 0;
+    font-family: "Courier New", monospace;
+    font-size: 1rem;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg);
+    color: var(--color-text);
+}
+
+.btn {
+    border: none;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-secondary {
+    background: var(--color-secondary);
+    color: var(--color-primary);
+}
+
+.btn-icon {
+    background: var(--color-primary);
+    color: #ffffff;
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: 10px 12px;
+}
+
+.type-toggle {
+    display: flex;
+    gap: 20px;
+    margin: 20px 4px;
+}
+
+.radio,
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.controls {
+    margin-top: 8px;
+    padding: 0 4px;
+}
+
+.field-label {
+    display: block;
+    margin: 16px 0 6px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: var(--color-secondary);
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    accent-color: var(--color-secondary);
+    width: 18px;
+    height: 18px;
+}
+
+.checkbox-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.separator-input {
+    width: 48px;
+    text-align: center;
+    padding: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+}

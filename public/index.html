@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PassGen</title>
+    <link rel="icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main class="page">
+        <header class="header">
+            <img src="PassGenLogo128.png" alt="" class="logo">
+            <h1>PassGen</h1>
+        </header>
+
+        <section class="card">
+            <div class="output-row">
+                <input id="output" type="text" readonly aria-label="Generated password">
+                <button id="copy-btn" class="btn btn-secondary" type="button">Copy</button>
+                <button id="refresh-btn" class="btn btn-icon" type="button" aria-label="Regenerate" title="Regenerate">&#8635;</button>
+            </div>
+        </section>
+
+        <div class="type-toggle" role="radiogroup" aria-label="Password type">
+            <label class="radio">
+                <input type="radio" name="pass-type" value="password" checked>
+                Password
+            </label>
+            <label class="radio">
+                <input type="radio" name="pass-type" value="passphrase">
+                Passphrase
+            </label>
+        </div>
+
+        <section id="password-controls" class="controls">
+            <label class="field-label" for="pass-length">Password length: <span id="pass-length-value">16</span></label>
+            <input id="pass-length" type="range" min="8" max="64" value="16">
+
+            <div class="checkbox-row">
+                <label class="checkbox">
+                    <input id="use-upper" type="checkbox" checked>
+                    <span>A-Z</span>
+                </label>
+                <label class="checkbox">
+                    <input id="use-lower" type="checkbox" checked>
+                    <span>a-z</span>
+                </label>
+                <label class="checkbox">
+                    <input id="use-number" type="checkbox" checked>
+                    <span>0-9</span>
+                </label>
+                <label class="checkbox">
+                    <input id="use-symbol" type="checkbox" checked>
+                    <span>!@#$%^&amp;*</span>
+                </label>
+            </div>
+        </section>
+
+        <section id="passphrase-controls" class="controls" hidden>
+            <div class="type-toggle" role="radiogroup" aria-label="Dictionary type">
+                <label class="radio">
+                    <input type="radio" name="dictionary-type" value="standard" checked>
+                    Standard
+                </label>
+                <label class="radio">
+                    <input type="radio" name="dictionary-type" value="offensive">
+                    Offensive
+                </label>
+            </div>
+
+            <label class="field-label" for="word-count">Number of words: <span id="word-count-value">3</span></label>
+            <input id="word-count" type="range" min="2" max="6" value="3">
+
+            <label class="field-label" for="separator">Word separator:</label>
+            <input id="separator" type="text" maxlength="1" value="-" class="separator-input">
+
+            <div class="checkbox-row">
+                <label class="checkbox">
+                    <input id="capitalize" type="checkbox" checked>
+                    <span>Capitalize?</span>
+                </label>
+                <label class="checkbox">
+                    <input id="add-number" type="checkbox" checked>
+                    <span>Add number?</span>
+                </label>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/generator.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
